@@ -39,7 +39,6 @@ cors(corsOptionsDelegate);
 
 const auth = require('./routes/auth');
 const signUp = require('./routes/signUp');
-const home = require('./routes/home');
 
 app.all('/', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
