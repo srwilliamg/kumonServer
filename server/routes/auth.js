@@ -13,15 +13,14 @@ router.post('/isLogged', passport.authenticate('jwt', {
 
 router.post('/logIn', (req, res) => {
   console.log('Request:', req.body);
-  var params = req.body;
-  var email = params.email;
-  var password = params.password;
+
+  let {email, password} = req.body;
 
   Parent.findOne({
     where: { email: email }
   })
     .then(parent => {
-
+      
       if (!parent) {
         throw "El usuario no se encuentra registrado.";
       }

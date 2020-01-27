@@ -1,46 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-const Parent = require('../models/index').parent;
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const admin = require("firebase-admin");
 
-router.post('/logIn', (req, res) => {
+router.post('/sendNotification', (req, res) => {
   console.log('Request:', req.body);
-  let params = req.body;
-  let email = params.email;
-  let password = params.password;
 
-
-  let serviceAccount = require(__dirname+"/../serviceAccountKey.json");
-
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://kumonapp-90962.firebaseio.com"
-  });
-
-  let registrationToken = "";
-
-  let payload = {
-    data : {
-      key: "test kumonApp"
-    }
+  let { title, body , data} = req.body;
+  
+  let registrationToken = "2131558493epdsrQuDAbk:APA91bEmrRMTWKBTy9kWmfH3KagVGZ3bMBlpFxL89SjQ4oJw_L3KGgB9REDp5E2PrMv8Pj4aIYS56G2MhycOqe-IDeBC4ySrHCWi_1QMFtRVA8bOEFEmDTT3p-3EEvc3Xusx5XIjPOyU";
+  
+  var message = {
+    token: registrationToken,
+    notification: { title, body },
+    data:JSON.parse(data)
   };
 
-  let options = {
-    priority : "high",
-    timetolive: 60*60*24
-  };
-
-  admin.messaging().sendToDevice(registrationToken, payload, options)
-  .then((res) => {
-    console.log("Message successfully sent: "+res);
-  })
-  .catch((err) => {
-    console.log("Error sending message: "+err);
-  });
-
+  console.log("Message to firebase: "+JSON.stringify(message)+"\n");
+  
+  admin.messaging().send(message)
+  .then((response) => {
+      // Response is a message ID string.
+      console.log('Successfully sent message:', response);
+      res.json({
+        data: response
+      });
+    })
+    .catch((error) => {
+      console.log('Error sending message:', error);
+      res.json({
+        message: 'Something is not working',
+        description: err
+      });
+    });
 });
 
 module.exports = router;

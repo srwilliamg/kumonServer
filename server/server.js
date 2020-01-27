@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const path = require('path');
 const cors = require('cors');
+const admin = require("firebase-admin");
 
 const port = process.env.PORT || 5000;
 
@@ -35,10 +36,19 @@ const corsOptionsDelegate = (req, callback) => {
 
   return callback(null, corsOptions);
 };
+
 cors(corsOptionsDelegate);
+
+// config key for firebase messages
+const serviceAccount = require(__dirname + "/serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://kumonapp-90962.firebaseio.com"
+});
 
 const auth = require('./routes/auth');
 const signUp = require('./routes/signUp');
+const services = require('./routes/services');
 
 app.all('/', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -48,6 +58,7 @@ app.all('/', function (req, res, next) {
 
 app.use('/api/signUp', signUp);
 app.use('/api/auth', auth);
+app.use('/api/message', services);
 
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

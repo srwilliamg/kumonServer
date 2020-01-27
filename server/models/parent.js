@@ -66,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
           }
       },
     },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
