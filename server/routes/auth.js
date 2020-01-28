@@ -4,6 +4,7 @@ const passport = require('passport');
 const Parent = require('../models/index').parent;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const strings = require(__dirname + '/../constants/constants.json');
 
 router.post('/isLogged', passport.authenticate('jwt', {
   session: false
@@ -14,45 +15,65 @@ router.post('/isLogged', passport.authenticate('jwt', {
 router.post('/logIn', (req, res) => {
   console.log('Request:', req.body);
 
-  let {email, password} = req.body;
+  let { email, password, token } = req.body;
 
   Parent.findOne({
     where: { email: email }
   })
     .then(parent => {
-      
+
       if (!parent) {
-        throw "El usuario no se encuentra registrado.";
-      }
-
-      let pass = bcrypt.compareSync(password, parent.get('password'));
-
-      if (pass) {
-        let token = 'JWT ' + jwt.sign(parent.dataValues, 'OtherSecret', {
-          expiresIn: 60 * 1000
+        res.status(200).json({
+          code: strings.errorCode.noRegistrated,
+          message: strings.errorDescription.noRegistrated
         });
-        res.status(200).json(
-          {
-            token: token,
-            name: parent.name,
-            name2: parent.name2,
-            lastname: parent.lastname,
-            lastname2: parent.lastname2,
-            email: parent.email
-          }
-        );
       }
       else {
-        res.status(401).json({
-          message: 'Password incorrect'
-        });
+
+        let pass = bcrypt.compareSync(password, parent.get('password'));
+
+        if (pass) {
+
+          let jwtToken = 'JWT ' + jwt.sign(parent.dataValues, 'OtherSecret', {
+            expiresIn: 60 * 1000
+          });
+
+          Parent.update({
+            token: token
+          }, {
+            where: { email: email }
+          })
+            .then((res) => console.log(res))
+            // .then(() => res.status(200).end())
+            .catch(err => console.log(err));
+
+          res.status(200).json(
+            {
+              token: jwtToken,
+              name: parent.name,
+              name2: parent.name2,
+              lastname: parent.lastname,
+              lastname2: parent.lastname2,
+              email: parent.email
+            }
+          );
+
+        }
+        else {
+          res.status(200).json({
+            code: strings.errorCode.passwordIncorrect,
+            message: strings.errorDescription.passwordIncorrect
+          });
+        }
+
       }
 
     })
     .catch(err => {
       console.log(err);
-      res.json({
-        message: 'Something is not working',
+      res.status(200).json({
+        code: strings.errorCode.genericError,
+        message: strings.errorDescription.genericError,
         description: err
       });
     });

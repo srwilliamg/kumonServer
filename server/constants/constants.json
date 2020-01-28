@@ -1,0 +1,12 @@
+{
+    "errorDescription": {
+        "genericError": "Something is not working",
+        "noRegistrated": "El usuario no se encuentra registrado",
+        "passwordIncorrect": "La contraseña ingresada es incorrecta"
+    },
+    "errorCode": {
+        "genericError": "000",
+        "noRegistrated": "001",
+        "passwordIncorrect": "002"
+    }
+}
