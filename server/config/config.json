@@ -8,10 +8,17 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
-    "password": "123456",
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "use_env_variable": "DATABASE_URL",
+    "DATABASE_URL": "postgres://vvoszedrtfqsyx:13a062d8e4eef61c1281074ade1b64e723eeb60c8210ec957dd0cd026c69c622@ec2-54-92-174-171.compute-1.amazonaws.com:5432/ddhk2a5ckle9lm",
+    "username": "vvoszedrtfqsyx",
+    "port": "5432",
+    "password": "13a062d8e4eef61c1281074ade1b64e723eeb60c8210ec957dd0cd026c69c622",
+    "database": "ddhk2a5ckle9lm",
+    "host": "ec2-54-92-174-171.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "protocol": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
   }
 }
