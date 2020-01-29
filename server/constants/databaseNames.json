@@ -1,0 +1,30 @@
+{
+    "tables": {
+        "parent": "parent",
+        "son": "son",
+        "parent_has_son": "parent_has_son"
+    },
+    "columns":{
+        "parent":{
+            "id_parent":"id_parent",
+            "username":"username",
+            "password":"password",
+            "name":"name",
+            "lastname":"lastname",
+            "email":"email",
+            "token":"token",
+            "createdAt":"createdAt",
+            "updatedAt":"updatedAt"
+        },
+        "son":{
+            "id_son":"id_son",
+            "name":"name",
+            "lastname":"lastname",
+            "createdAt":"createdAt",
+            "updatedAt":"updatedAt"
+        },
+        "parent_has_son":{
+            "id_parent_has_son": "id_parent_has_son"
+        }
+    }
+}

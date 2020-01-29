@@ -50,10 +50,9 @@ router.post('/logIn', (req, res) => {
           res.status(200).json(
             {
               token: jwtToken,
+              idparent: parent.id_parent,
               name: parent.name,
-              name2: parent.name2,
               lastname: parent.lastname,
-              lastname2: parent.lastname2,
               email: parent.email
             }
           );

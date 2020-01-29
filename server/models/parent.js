@@ -1,8 +1,9 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const dbnames = require(__dirname + '/../constants/databaseNames.json');
 
 module.exports = (sequelize, DataTypes) => {
-  const Parent = sequelize.define('parent', {
+  const Parent = sequelize.define(dbnames.tables.parent, {
     id_parent: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -12,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ["^[a-z]+$",'i'],
+        is: ["^[a-z]+$", 'i'],
         notEmpty: true,
       }
     },
@@ -27,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ["^[a-z]+$",'i'],
+        is: ["^[a-z]+$", 'i'],
         notEmpty: true,
       }
     },
@@ -35,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: ["^[a-z]+$",'i'],
+        is: ["^[a-z]+$", 'i'],
         notEmpty: true,
       }
     },
@@ -44,26 +45,26 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isEmail: {
-          msg:"Please enter a correct email."
+          msg: "Please enter a correct email."
         },
         notEmpty: {
           msg: "Email cannot be empty."
         },
-        isUnique : function (value, next) {
-            const field = 'email';
-            var query = {};
-            query[field] = value;
-            Parent.find({
-              where: query,
-              attributes: ['email']
-            }).then(function (obj) {
-              if (obj) {
-                next(field + ' "' + value + '" is already in use');
-              } else {
-                next();
-              }
-            });
-          }
+        isUnique: function (value, next) {
+          const field = dbnames.columns.parent.email;
+          var query = {};
+          query[field] = value;
+          Parent.find({
+            where: query,
+            attributes: [dbnames.columns.parent.email]
+          }).then(function (obj) {
+            if (obj) {
+              next(field + ' "' + value + '" is already in use');
+            } else {
+              next();
+            }
+          });
+        }
       },
     },
     token: {
@@ -79,12 +80,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,
       validate: {
-      isDate: true,
+        isDate: true,
       }
     },
   }, {
     timestamps: true,
-    freezeTableName: true,
+    // freezeTableName: true,
     hooks: {
       beforeCreate: (parent, options) => {
         {
@@ -95,10 +96,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Parent.associate = function (models) {
-    Parent.hasOne(models.parent_has_son, {
-      foreignKey: 'id_parent',
-      as: 'parent'
+    Parent.belongsToMany(models.son, {
+      foreignKey: dbnames.columns.parent.id_parent,
+      through: dbnames.tables.parent_has_son,
+      foreignKey: dbnames.columns.parent.id_parent,
+      as: dbnames.tables.parent
     });
   };
+
   return Parent;
 };

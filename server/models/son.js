@@ -1,5 +1,6 @@
+const dbnames = require(__dirname + '/../constants/databaseNames.json');
 module.exports = (sequelize, DataTypes) => {
-  const Son = sequelize.define('son', {
+  const Son = sequelize.define(dbnames.tables.son, {
     id_son: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -31,13 +32,14 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     timestamps: true,
-    freezeTableName: true,
+    // freezeTableName: true,
   });
 
   Son.associate = function (models) {
-    Son.hasOne(models.parent_has_son, {
-      foreignKey: 'id_son',
-      as: 'Son'
+    Son.belongsToMany(models.parent, {
+      through: dbnames.tables.parent_has_son,
+      foreignKey: dbnames.columns.son.id_son,
+      as: dbnames.tables.son
     });
   };
   return Son;
