@@ -1,114 +1,12 @@
 'use strict';
-
+const arrayParents = require(__dirname + '/../seedData/parents.json');
+const arraySons = require(__dirname + '/../seedData/sons.json');
+const arrayParentHasSons = require(__dirname + '/../seedData/parent_has_sons.json');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-
-    let arrayParents = [];
-    let arraySons = [];
-    let arrayParentHasSon = [];
-
-    for (let i = 1; i <= 10; i++) {
-      arrayParents.push(
-        {
-          id_parent: "" + i,
-          username: "dummy" + i,
-          password: "$2b$10$LbLrdjyb0jcyNXDdw.bFpuBx8omFjkUphD8UynLakKnRjbcdhKWdi",
-          name: "dummy" + i,
-          lastname: "dummy" + i,
-          email: "dummy" + i + "@gmail.com",
-          token: "12313154",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }
-      );
-
-      arraySons.push(
-        {
-          id_son: "" + i,
-          name: "name" + i,
-          lastname: "lastname" + i,
-          image_url: "kid(" + (i + 1) % 5 + ").png",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      );
-
-      arrayParentHasSon.push(
-        {
-          id_parent_has_son: "" + i,
-          id_parent: "" + i,
-          id_son: "" + i,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      );
-    }
-
-    arrayParents.push(
-      {
-        id_parent: "11",
-        username: "srwilliamg",
-        password: "$2b$10$LbLrdjyb0jcyNXDdw.bFpuBx8omFjkUphD8UynLakKnRjbcdhKWdi",
-        name: "William",
-        lastname: "Salazar",
-        email: "srwilliamg@gmail.com",
-        token: "12313154",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
-    );
-
-    arrayParents.push(
-      {
-        id_parent: "12",
-        username: "Nathalia",
-        password: "$2b$10$LbLrdjyb0jcyNXDdw.bFpuBx8omFjkUphD8UynLakKnRjbcdhKWdi",
-        name: "Nathalia",
-        lastname: "Bernal",
-        email: "nathalia.bernal@utp.edu.co",
-        token: "12313154",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
-    );
-
-    for (let index = 0; index < arraySons.length; index++) {
-
-      arrayParentHasSon.push(
-        {
-          id_parent_has_son: (11 + index).toString(),
-          id_parent: "11",
-          id_son: arraySons[index].id_son,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      );
-
-      arrayParentHasSon.push(
-        {
-          id_parent_has_son: (11 + index).toString(),
-          id_parent: "12",
-          id_son: arraySons[index].id_son,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      );
-
-    }
-
-    for (let j = 0; j < arrayParentHasSon.length; j++) {
-      arrayParentHasSon[j].id_parent_has_son = "" + j;
-    }
-
-    console.log(
-      arrayParents,
-      arraySons,
-      arrayParentHasSon
-      );
-
     await queryInterface.bulkInsert('parents', arrayParents, {});
     await queryInterface.bulkInsert('sons', arraySons, {});
-    return await queryInterface.bulkInsert('parent_has_sons', arrayParentHasSon, {});
+    return await queryInterface.bulkInsert('parent_has_sons', arrayParentHasSons, {});
   },
 
   down: async (queryInterface, Sequelize) => {
