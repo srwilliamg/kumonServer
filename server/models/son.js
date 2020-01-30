@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       }
     },
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.NOW,

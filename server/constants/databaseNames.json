@@ -20,6 +20,7 @@
             "id_son":"id_son",
             "name":"name",
             "lastname":"lastname",
+            "image_url":"image_url",
             "createdAt":"createdAt",
             "updatedAt":"updatedAt"
         },

@@ -27,6 +27,7 @@ module.exports = {
           id_son: "" + i,
           name: "name" + i,
           lastname: "lastname" + i,
+          image_url: "kid(" + (i + 1) % 5 + ").png",
           createdAt: new Date(),
           updatedAt: new Date()
         }
@@ -75,7 +76,7 @@ module.exports = {
 
       arrayParentHasSon.push(
         {
-          id_parent_has_son: "1",
+          id_parent_has_son: (11 + index).toString(),
           id_parent: "11",
           id_son: arraySons[index].id_son,
           createdAt: new Date(),
@@ -85,7 +86,7 @@ module.exports = {
 
       arrayParentHasSon.push(
         {
-          id_parent_has_son: "1",
+          id_parent_has_son: (11 + index).toString(),
           id_parent: "12",
           id_son: arraySons[index].id_son,
           createdAt: new Date(),
@@ -96,8 +97,14 @@ module.exports = {
     }
 
     for (let j = 0; j < arrayParentHasSon.length; j++) {
-      arrayParentHasSon[j].id_parent_has_son = ""+j;
+      arrayParentHasSon[j].id_parent_has_son = "" + j;
     }
+
+    console.log(
+      arrayParents,
+      arraySons,
+      arrayParentHasSon
+      );
 
     await queryInterface.bulkInsert('parents', arrayParents, {});
     await queryInterface.bulkInsert('sons', arraySons, {});
