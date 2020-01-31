@@ -15,14 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     ParentHasSon.belongsTo(models.parent, {
       foreignKey: dbnames.columns.parent.id_parent,
       as: dbnames.tables.parent
-    });
-  };
-
-  ParentHasSon.associate = function (models) {
+    })
     ParentHasSon.belongsTo(models.son, {
       foreignKey: dbnames.columns.son.id_son,
       as: dbnames.tables.son
-    });
+    })
   };
+
   return ParentHasSon;
 };

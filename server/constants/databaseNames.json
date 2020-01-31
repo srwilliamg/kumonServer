@@ -2,7 +2,8 @@
     "tables": {
         "parent": "parent",
         "son": "son",
-        "parent_has_son": "parent_has_son"
+        "parent_has_son": "parent_has_son",
+        "record": "record"
     },
     "columns":{
         "parent":{
@@ -26,6 +27,10 @@
         },
         "parent_has_son":{
             "id_parent_has_son": "id_parent_has_son"
+        },
+        "record":{
+            "id_record":"id_record",
+            "createdAt":"createdAt"
         }
     }
 }

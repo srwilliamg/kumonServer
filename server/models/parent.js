@@ -97,7 +97,6 @@ module.exports = (sequelize, DataTypes) => {
 
   Parent.associate = function (models) {
     Parent.belongsToMany(models.son, {
-      foreignKey: dbnames.columns.parent.id_parent,
       through: dbnames.tables.parent_has_son,
       foreignKey: dbnames.columns.parent.id_parent,
       as: dbnames.tables.parent

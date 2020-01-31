@@ -44,7 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       through: dbnames.tables.parent_has_son,
       foreignKey: dbnames.columns.son.id_son,
       as: dbnames.tables.son
-    });
+    })
+    // creates a foreignKey on specified model 
+    Son.hasMany(models.record, {
+      foreignKey: 'id_son',
+      as: dbnames.tables.record
+    })
   };
+
   return Son;
 };

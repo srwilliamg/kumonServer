@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const admin = require("firebase-admin");
 const ParentHasSon = require('../models/index').parent_has_son;
+const Records = require('../models/index').record;
 const Parent = require('../models/index').parent;
 const passport = require('passport');
 
@@ -68,6 +69,30 @@ router.post('/consultSons', passport.authenticate('jwt', {
   })
     .then(son => {
       res.status(200).json(son);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(503).json({
+        message: "Something was wrong",
+        error: err
+      });
+    })
+
+});
+
+// Consult every task pending user's task
+router.post('/consultRecords', passport.authenticate('jwt', {
+  session: false
+}), (req, res) => {
+
+  // const data = req.body;
+  const idSon = req.body.idson;
+
+  Records.findAll({
+    where: { id_son: idSon }
+  })
+    .then(records => {
+      res.status(200).json(records);
     })
     .catch(err => {
       console.log(err);
